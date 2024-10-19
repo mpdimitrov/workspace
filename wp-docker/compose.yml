@@ -27,5 +27,5 @@ services:
       - ./wordpress:/var/www/html:ro
     depends_on:
       - wp
-    # ports:
-    #   - 80:8080
+    ports:
+      - 80:8080

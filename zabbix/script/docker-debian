@@ -1,0 +1,11 @@
+#!/bin/env bash
+
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+docker rm -f debian-zabbix
+
+docker run -d --name debian-zabbix \
+    --privileged \
+    -v /sys/fs/cgroup:/sys/fs/cgroup:ro \
+    -v $SCRIPT_DIR/../../common/bin/:/usr/local/bin \
+    robertdebock/debian:bookworm

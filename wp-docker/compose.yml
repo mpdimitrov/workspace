@@ -1,0 +1,31 @@
+services:
+  
+  db:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+  wp:
+    image: wordpress:fpm-alpine
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+      WORDPRESS_DB_USER: ${MYSQL_USER}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+    depends_on:
+      - db
+    volumes:
+      - ./wordpress:/var/www/html
+
+  nginx:
+    image: nginxinc/nginx-unprivileged:alpine-slim
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./wordpress:/var/www/html:ro
+    depends_on:
+      - wp
+    # ports:
+    #   - 80:8080

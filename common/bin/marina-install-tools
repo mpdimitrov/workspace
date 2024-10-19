@@ -1,0 +1,51 @@
+#!/bin/env bash
+
+SUDO="sudo"
+
+if [[ "$(whoami)" == 'root' ]]; then
+    SUDO=""
+fi
+
+$SUDO apt-get update -qq
+$SUDO apt-get install -yqq \
+    git \
+    git-lfs \
+    fzf \
+    zsh \
+    zsh-syntax-highlighting \
+    zsh-autosuggestions \
+    htop \
+    sudo \
+    curl \
+    vim
+
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
+
+mkdir -p ~/.local/bin
+
+local_bin_path='export PATH=$PATH:~/.local/bin'
+
+# Config bash
+
+if ! grep -q "$local_bin_path" ~/.bashrc; then
+    echo "$local_bin_path" >> ~/.bashrc
+fi
+
+sed -i 's|OSH_THEME="font"|OSH_THEME="vscode"|' ~/.bashrc
+
+## Config ZSH
+
+if ! grep -q "$local_bin_path" ~/.zshrc; then
+    echo "$local_bin_path" >> ~/.zshrc
+fi
+
+# sed -i 's|plugins=(git)|plugins=(git fzf)|' ~/.zshrc
+
+if ! grep -q /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ~/.zshrc; then
+    echo "source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh" >> ~/.zshrc
+fi
+if ! grep -q /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ~/.zshrc; then
+    echo "source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ~/.zshrc
+fi

@@ -8,6 +8,7 @@ fi
 
 $SUDO apt-get update -qq
 $SUDO apt-get install -yqq \
+    bash-completion \
     git \
     git-lfs \
     fzf \
@@ -49,3 +50,12 @@ fi
 if ! grep -q /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ~/.zshrc; then
     echo "source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ~/.zshrc
 fi
+
+# create user
+
+useradd \
+    -d /home/marina \
+    -G sudo \
+    -m -U \
+    -p marina \
+    marina
